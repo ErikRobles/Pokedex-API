@@ -13,7 +13,7 @@ This is a Node.js application that interacts with the PokeAPI and a MongoDB data
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/ErikRobles/Pokedex-API.git
    cd node-pokedex
 2. Install dependencies:
    ```bash
