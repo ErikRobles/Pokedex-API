@@ -112,6 +112,27 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "FetchAndSavePokemon",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/pokemon/pikachu",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"pokemon",
+						"pikachu"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

@@ -2,39 +2,34 @@ const axios = require('axios');
 const Pokemon = require('../models/pokemon');
 
 // Fetch and save a Pokémon by name
-const getPokemon = async (req, res) => {
+const fetchAndSavePokemon = async (req, res) => {
+  const pokemonName = req.params.name.toLowerCase();
+  const pokeApiUrl = process.env.POKEAPI_URL;
+
   try {
-    const { name } = req.params;
+      const response = await axios.get(`${pokeApiUrl}${pokemonName}`);
+      const { id, name, moves, types } = response.data;
 
-    // Check if the Pokémon already exists in the database by name
-    const existingPokemon = await Pokemon.findOne({ name });
-    if (existingPokemon) {
-      return res.status(200).send(existingPokemon);
-    }
+      // Extract the first 4 moves
+      const pokemonMoves = moves.slice(0, 4).map(move => move.move.name);
 
-    // Fetch Pokémon data from PokeAPI
-    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
-    const { id, moves, types } = response.data;
+      // Extract types
+      const pokemonTypes = types.map(type => type.type.name);
 
-    // Additional check to see if Pokémon with this ID already exists
-    const existingPokemonById = await Pokemon.findOne({ id });
-    if (existingPokemonById) {
-      return res.status(200).send(existingPokemonById);
-    }
+      // Create a new Pokémon instance
+      const newPokemon = new Pokemon({
+          id,
+          name,
+          moves: pokemonMoves,
+          types: pokemonTypes,
+      });
 
-    // Create a new Pokémon document
-    const pokemon = new Pokemon({
-      id,
-      name: response.data.name,
-      moves: moves.slice(0, 4).map(move => move.move.name),
-      types: types.map(type => type.type.name)
-    });
+      // Save to the database
+      await newPokemon.save();
 
-    // Save the Pokémon to the database
-    await pokemon.save();
-    res.status(201).send(pokemon);
+      res.status(201).send(newPokemon);
   } catch (error) {
-    res.status(500).send({ error: 'Failed to fetch and save Pokemon data', details: error.message });
+      res.status(500).send({ error: error.message });
   }
 };
 
@@ -94,7 +89,7 @@ const listPokemons = async (req, res) => {
 };
 
 module.exports = {
-  getPokemon,
+  fetchAndSavePokemon,
   deletePokemonById,
   deletePokemonByName,
   listPokemons,
