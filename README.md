@@ -76,3 +76,17 @@ You can use Postman to test the API endpoints.
 ### License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+### Postman Collection
+
+A Postman collection for testing the API endpoints is included in the repository. You can import the collection into Postman to easily test the API.
+
+#### Importing the Collection
+
+1. Open Postman.
+2. Click on the "Import" button in the top left corner.
+3. Select the "Upload Files" tab.
+4. Choose the `pokedex-api.postman_collection.json` file from the repository.
+5. Click "Import".
+
+You should now see the "Pokedex API" collection in your Postman app with all the API endpoints pre-configured.
+
